@@ -37,6 +37,7 @@ grails.project.dependency.resolution = {
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
         // runtime 'mysql:mysql-connector-java:5.1.27'
+		compile 'org.open-dolphin:dolphin-server:0.10'
     }
 
     plugins {
@@ -44,5 +45,7 @@ grails.project.dependency.resolution = {
               ":rest-client-builder:1.0.3") {
             export = false
         }
-    }
+//		compile ":asset-pipeline:1.8.11"
+		compile ":asset-pipeline:1.9.3"
+	}
 }

@@ -49,25 +49,25 @@ Brief summary/description of the plugin.
 
     def doWithSpring = {
 
-		eventBus(EventBus) { bean ->
+		dolphinEventBus(EventBus) { bean ->
 			bean.scope = 'singleton'
 		}
 
-		modelStore(ServerModelStore) { bean ->
+		dolphinModelStore(ServerModelStore) { bean ->
 			bean.scope = 'session' // every session must have its own model store
 		}
 
-		serverConnector(ServerConnector) { bean ->
+		dolphinServerConnector(ServerConnector) { bean ->
 			bean.scope = 'session'  // could be shared among sessions but since the registry is set, this is safer...
 			codec = new JsonCodec()
-			serverModelStore = ref('modelStore')
+			serverModelStore = ref('dolphinModelStore')
 		}
 
-		serverDolphin(ServerDolphin, ref('modelStore'), ref('serverConnector')) { bean ->
+		serverDolphin(ServerDolphin, ref('dolphinModelStore'), ref('dolphinServerConnector')) { bean ->
 			bean.scope = 'session'
 		}
 
-		dolphinBean(DolphinSpringBean, ref('serverDolphin'), ref('dolphinAppDirector'), ref('eventBus')) { bean ->
+		dolphinBean(DolphinSpringBean, ref('serverDolphin'), ref('dolphinAppDirector'), ref('dolphinEventBus')) { bean ->
 			bean.scope = 'session'
 		}
 

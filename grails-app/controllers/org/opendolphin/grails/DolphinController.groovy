@@ -6,7 +6,7 @@ class DolphinController {
 
 	static scope = 'session'
 
-	ServerConnector serverConnector
+	ServerConnector dolphinServerConnector
 	DolphinSpringBean dolphinBean  // must be here in order to trigger creation (?)
 
 	static allowedMethods = ['POST']
@@ -27,13 +27,13 @@ class DolphinController {
 			return
 		}
 		log.debug "received json: $requestJson"
-		def commands = serverConnector.codec.decode(requestJson)
+		def commands = dolphinServerConnector.codec.decode(requestJson)
 		def results = new LinkedList()
 		commands?.each {
 			log.debug "processing $it"
-			results.addAll serverConnector.receive(it)
+			results.addAll dolphinServerConnector.receive(it)
 		}
-		def jsonResponse = serverConnector.codec.encode(results)
+		def jsonResponse = dolphinServerConnector.codec.encode(results)
 		log.debug "sending json response: $jsonResponse"
 		render text: jsonResponse
 	}

@@ -5,7 +5,7 @@ import org.opendolphin.core.server.ServerDolphin
 import org.opendolphin.core.server.ServerModelStore
 import org.opendolphin.grails.DolphinSpringBean
 
-class OpenDolphinGrailsPluginGrailsPlugin {
+class OpenDolphinGrailsPlugin {
     // the plugin version
     def version = "0.1"
     // the version or versions of Grails the plugin is designed for
@@ -17,10 +17,10 @@ class OpenDolphinGrailsPluginGrailsPlugin {
 
     // TODO Fill in these fields
     def title = "Open Dolphin Grails Plugin Plugin" // Headline display name of the plugin
-    def author = "Your name"
-    def authorEmail = ""
+    def author = "Sven Ehrke"
+    def authorEmail = "sven.ehrke@sven-ehrke.de"
     def description = '''\
-Brief summary/description of the plugin.
+Supports you to dolphinize your grails applications.
 '''
 
     // URL to the plugin's documentation

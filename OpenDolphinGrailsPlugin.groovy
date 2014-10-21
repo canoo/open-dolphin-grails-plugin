@@ -24,7 +24,7 @@ Supports you to dolphinize your grails applications.
 '''
 
     // URL to the plugin's documentation
-    def documentation = "http://grails.org/plugin/open-dolphin-grails-plugin"
+    def documentation = "http://grails.org/plugin/open-dolphin"
 
     // Extra (optional) plugin metadata
 

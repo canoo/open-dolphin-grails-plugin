@@ -1,0 +1,4 @@
+= Development Information
+
+* invoke +grails package-plugin+
+* install plugin: invoke +grails maven-install+. The plugin will be put under +~/.m2/repository/org/grails/plugins/open-dolphin-grails-plugin+

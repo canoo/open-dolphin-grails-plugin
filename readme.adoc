@@ -242,8 +242,20 @@ Now we need the gsp for our application:
 </html>
 ----
 
+* Add the following UrlMapping to your app
+
+[source,groovy]
+.grails-app/conf/UrlMappings.groovy
+----
+    "/od/$pageName"(
+      controller: 'app', // dirty trick: this is the subdir of the view
+      view: { params.pageName }
+    )
+----
+
 
 * Point your browser to http://localhost:8080/open-dolphin-grails-app/od/hellodolphin
+  (here we assume that your grails application is called _open-dolphin-grails-app_).
 
 
 

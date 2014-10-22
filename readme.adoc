@@ -94,7 +94,7 @@ public class MyAppDirector extends DolphinServerAction {
 Next we need the two commandhandlers _MyAppDirector_ registers...
 
 [source,groovy]
-.grails-app/utils/com/example/myapp/InitHandler.groovy
+.grails-app/utils/com/example/myapp/InitCommandHandler.groovy
 ----
 package com.example.myapp
 
@@ -254,8 +254,12 @@ Now we need the gsp for our application:
 ----
 
 
-* Point your browser to http://localhost:8080/open-dolphin-grails-app/od/hellodolphin
+* Start your grails application and point your browser to http://localhost:8080/open-dolphin-grails-app/od/hellodolphin
   (here we assume that your grails application is called _open-dolphin-grails-app_).
+
+You should see a simple GUI with a textfield containing _Duke_. When pressing the _Greet_ button the label below the
+textfield should change from _undefined_ to _Hey Duke !_
+
 
 
 

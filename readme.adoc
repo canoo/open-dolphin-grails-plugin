@@ -254,8 +254,8 @@ Now we need the gsp for our application:
 ----
 
 
-* Start your grails application and point your browser to http://localhost:8080/open-dolphin-grails-app/od/hellodolphin
-  (here we assume that your grails application is called _open-dolphin-grails-app_).
+* Start your grails application and point your browser to http://localhost:8080/odga/od/hellodolphin
+  (here we assume that your grails application is called _odga_. Change it according to the name you provided when you called _grails create-app <name>_).
 
 You should see a simple GUI with a textfield containing _Duke_. When pressing the _Greet_ button the label below the
 textfield should change from _undefined_ to _Hey Duke !_

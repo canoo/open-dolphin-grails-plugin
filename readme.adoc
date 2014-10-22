@@ -1,5 +1,173 @@
-= Development Information
+= A Grails Plugin for Open Dolphin
 
-* invoke +grails package-plugin+
-* install plugin: invoke +grails maven-install+. The plugin will be put under +~/.m2/repository/org/grails/plugins/open-dolphin-grails-plugin+
+This plugin helps you to develop the server side of your Open-Dolphin application with grails.
+It comes with a controller which handles the incoming dolphin requests and also has the required spring-beans
+configured. _opendolphin.js_ is included as well so that you can create html/gsp based clients and/or Java based clients (JavaFX, Swing, ...)
+
+== Usage
+
+* Add the Open-Dolphin Grails plugin to your plugin-dependencies:
+
+[source,groovy]
+.grails-app/conf/BuildConfig.groovy
+----
+...
+grails.project.dependency.resolution = {
+  ...
+  plugins {
+    ...
+    compile ":open-dolphin:0.10.0"
+    ...
+----
+
+* Add your DolphinDirector as a Spring bean:
+
+[source,groovy]
+.grails-app/conf/spring/resources.groovy
+----
+import com.example.myapp.MyAppDirector
+
+beans = {
+  dolphinAppDirector(MyAppDirector)
+}
+----
+
+=== HTML / GSP based clients
+
+You need to include _opendolphin.js_ into your GSPs. You can do this for each individual GSP
+or in the layout-gsp as shown here:
+
+[source,groovy]
+.grails-app/views/layouts/main.gsp
+----
+...
+  <script
+    data-main="${resource(dir: 'dolphin', file: 'opendolphin.js')}"
+    src="${resource(dir: 'libs', file: 'require.js')}">
+  </script>
+  <g:layoutHead/>
+...
+----
+
+Note that _opendolphin.js_ is loaded via _requiure.js_.
+
+If not already done make sure your GSPs refer to the layout:
+[source,groovy]
+----
+...
+<head>
+  <meta name="layout" content="main">
+  ...
+----
+
+Now we are done with the setup. The following section will show you how to get your first application up and running.
+
+=== Example
+
+Note that we will only show how to get the example up and running. For more information about Open-Dolphin visit http://www.open-dolphin.org.
+
+First we need to create the _DolphinDirector_:
+
+[source,groovy]
+.grails-app/utils/com/example/myapp/MyAppDirector.groovy
+----
+package com.example.myapp
+
+import org.opendolphin.core.server.EventBus
+import org.opendolphin.core.server.action.DolphinServerAction
+import org.opendolphin.core.server.comm.ActionRegistry
+
+import static com.example.myapp.ApiConstants.*
+
+public class MyAppDirector extends DolphinServerAction {
+
+  EventBus eventBus
+
+  public void registerIn(ActionRegistry actionRegistry) {
+
+    actionRegistry.register(CMD_INIT, new InitCommandHandler(serverDolphin: serverDolphin))
+    actionRegistry.register(CMD_GREET, new GreetCommandHandler(serverDolphin: serverDolphin))
+  }
+}
+----
+
+Next we need the two commandhandlers _MyAppDirector_ registers...
+
+[source,groovy]
+.grails-app/utils/com/example/myapp/InitHandler.groovy
+----
+package com.example.myapp
+
+import org.opendolphin.core.comm.Command
+import org.opendolphin.core.comm.NamedCommand
+import org.opendolphin.core.server.DTO
+import org.opendolphin.core.server.ServerDolphin
+import org.opendolphin.core.server.Slot
+import org.opendolphin.core.server.comm.CommandHandler
+
+import static com.example.myapp.ApiConstants.*
+
+class InitCommandHandler implements CommandHandler<NamedCommand> {
+
+  ServerDolphin serverDolphin
+
+  public void handleCommand(NamedCommand command, List<Command> response) {
+    // Create PM:
+    serverDolphin.presentationModel PM_APP, null, new DTO(new Slot(ATT_NAME, null), new Slot(ATT_GREETING, null))
+
+    // Init PM:
+    serverDolphin[PM_APP][ATT_NAME].value = 'Duke'
+  }
+}
+----
+
+[source,groovy]
+.grails-app/utils/com/example/myapp/GreetCommandHandler.groovy
+----
+package com.example.myapp
+
+import org.opendolphin.core.comm.Command
+import org.opendolphin.core.comm.NamedCommand
+import org.opendolphin.core.server.ServerDolphin
+import org.opendolphin.core.server.comm.CommandHandler
+
+import static com.example.myapp.ApiConstants.*
+
+class GreetCommandHandler implements CommandHandler<NamedCommand> {
+
+  ServerDolphin serverDolphin
+
+  public void handleCommand(NamedCommand command, List<Command> response) {
+
+    serverDolphin[PM_APP][ATT_GREETING].value = "Hey " + serverDolphin[PM_APP][ATT_NAME].value + " !";
+  }
+}
+----
+
+...and constants used by client and server so that they can communicate with each other:
+
+[source,groovy]
+.grails-app/utils/com/example/myapp/ApiConstants.groovy
+----
+package com.example.myapp
+
+class ApiConstants {
+  public static final String PM_APP = unique("APP");
+  public static final String ATT_NAME = "ATT_NAME";
+  public static final String ATT_GREETING = "ATT_GREETING";
+
+  public static final String CMD_INIT = unique("CMD_INIT");
+  public static final String CMD_GREET = unique("CMD_GREET");
+
+
+  /**
+   * Unify the identifier with the class name prefix.
+   */
+  private static String unique(String key) {
+    return ApiConstants.class.getName() + "." + key;
+  }
+}
+----
+
+
 

@@ -169,5 +169,82 @@ class ApiConstants {
 }
 ----
 
+Now we need the gsp for our application:
+
+[source,groovy]
+.grails-app/views/app/hellodolphin.gsp
+----
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="com.example.myapp.ApiConstants;" contentType="text/html;charset=UTF-8" %>
+
+<html>
+<head>
+  <title>Hello Dolphin</title>
+  <meta name="layout" content="main"/>
+
+  <script>
+    require([ 'opendolphin' ], function (dol) {
+      var dolphin = dol.dolphin("<%=application.getContextPath()%>/dolphin/", true);
+      dolphin.send('${ApiConstants.CMD_INIT}', {onFinished: function (pms) {
+        console.log("in init handler");
+
+        var pm = dolphin.getAt('${ApiConstants.PM_APP}');
+        var att_name = pm.getAt('${ApiConstants.ATT_NAME}');
+        var att_greeting = pm.getAt('${ApiConstants.ATT_GREETING}');
+
+        // Get hold to widgets:
+        var nameTextField = document.getElementById("nameTextField");
+        var greetingLabel = document.getElementById("greetingLabel");
+        var greetButton = document.getElementById("greetButton");
+
+        // Bindings:
+        // nameTextField -> att_name
+        nameTextField.addEventListener("input", function () {
+          console.log("name: ", nameTextField.value);
+          att_name.setValue(nameTextField.value);
+        });
+
+        // att_greeting -> greetingLabel
+        att_greeting.onValueChange(function (event) {
+          console.log("greeting changed");
+          greetingLabel.innerHTML = event.newValue;
+        });
+
+        att_name.onValueChange(function (event) {
+          if (event.newValue !== undefined) {
+            console.log("name changed to: ", event.newValue);
+            nameTextField.value = event.newValue;
+          }
+        });
+
+
+        greetButton.onclick = function () {
+          dolphin.send('${ApiConstants.CMD_GREET}');
+        };
+
+      }});
+
+      console.log("OK");
+    });
+  </script>
+</head>
+
+<body>
+<div class="container" role="main">
+
+  <input id="nameTextField" type="text" value="">
+  <button id="greetButton" class="btn btn-primary">Greet</button>
+  <h1><span id="greetingLabel" class="label label-primary label-success">unchanged</span></h1>
+
+</div>
+
+</body>
+</html>
+----
+
+
+* Point your browser to http://localhost:8080/open-dolphin-grails-app/od/hellodolphin
+
+
 
 

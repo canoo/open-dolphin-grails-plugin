@@ -4,9 +4,11 @@ This plugin helps you to develop the server side of your Open-Dolphin applicatio
 It comes with a controller which handles the incoming dolphin requests and also has the required spring-beans
 configured. _opendolphin.js_ is included as well so that you can create html/gsp based clients and/or Java based clients (JavaFX, Swing, ...)
 
+(Tested against grails 2.4.2)
+
 == Usage
 
-* Add the Open-Dolphin Grails plugin to your plugin-dependencies:
+* Add the Open-Dolphin Grails plugin to your plugin-dependencies and make sure you have to _asset-pipeline_ plugin installed:
 
 [source,groovy]
 .grails-app/conf/BuildConfig.groovy
@@ -17,6 +19,7 @@ grails.project.dependency.resolution = {
   plugins {
     ...
     compile ":open-dolphin:0.10.0"
+    compile ":asset-pipeline:1.8.11"
     ...
 ----
 

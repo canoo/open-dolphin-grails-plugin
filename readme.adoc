@@ -18,8 +18,8 @@ grails.project.dependency.resolution = {
   ...
   plugins {
     ...
-    compile ":open-dolphin:0.10.0"
-    compile ":asset-pipeline:1.8.11"
+    compile ":open-dolphin:0.12.0"
+    compile ":asset-pipeline:1.9.9"
     ...
 ----
 
@@ -44,15 +44,10 @@ or in the layout-gsp as shown here:
 .grails-app/views/layouts/main.gsp
 ----
 ...
-  <script
-    data-main="${resource(dir: 'dolphin', file: 'opendolphin.js')}"
-    src="${resource(dir: 'libs', file: 'require.js')}">
-  </script>
+  <script type="text/javascript" src="${assetPath(src: 'opendolphin.js')}"></script>
   <g:layoutHead/>
 ...
 ----
-
-Note that _opendolphin.js_ is loaded via _requiure.js_.
 
 If not already done make sure your GSPs refer to the layout:
 [source,groovy]
@@ -186,7 +181,6 @@ Now we need the gsp for our application:
   <meta name="layout" content="main"/>
 
   <script>
-    require([ 'opendolphin' ], function (dol) {
       var dolphin = dol.dolphin("<%=application.getContextPath()%>/dolphin/", true);
       dolphin.send('${ApiConstants.CMD_INIT}', {onFinished: function (pms) {
         console.log("in init handler");
@@ -227,8 +221,6 @@ Now we need the gsp for our application:
 
       }});
 
-      console.log("OK");
-    });
   </script>
 </head>
 

@@ -7,7 +7,7 @@ import org.opendolphin.grails.DolphinSpringBean
 
 class OpenDolphinGrailsPlugin {
     // the plugin version
-    def version = "0.10.0"
+    def version = "0.12.0"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "2.4 > *"
     // resources that are excluded from plugin packaging

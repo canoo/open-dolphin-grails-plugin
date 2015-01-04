@@ -2,5 +2,7 @@
 
 * invoke +grails package-plugin+
 * install plugin: invoke +grails maven-install+. The plugin will be put under +~/.m2/repository/org/grails/plugins/open-dolphin-grails-plugin+
+* In `open-dolphin-grails-app/grails-app/conf/BuildConfig.groovy` switch `useOpenDolphinPluginInline` to false
 * Open browser at: http://localhost:8080/open-dolphin-grails-app/od/hellodolphin
+* invoke +grails publish-plugin+
 
